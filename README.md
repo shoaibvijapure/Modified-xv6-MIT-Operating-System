@@ -1,16 +1,16 @@
 # Modified-xv6-MIT-Operating-System
 
-#### MIS: 141808009
+### MIS: 141808009
 
-### Overview
+## Overview
 
 Various additional improvements have been made to the xv6 operating system such as adding the system calls like mk, rmdir, clear, shutdown, rcounter, wcounter, ccounter, date, myecho, ocounter. 
 
-### Run the shell
+## Running the shell
 
 1. Run the command `make qemu` or `make qemu-nox`.
 
-### Adding System Call 
+## Adding System Call 
 
 The files that have been modified are:
 
@@ -20,13 +20,13 @@ The files that have been modified are:
 4. usys.S
 5. sysproc.c
 
-#### NOTE: Make sure to use command:
+### NOTE: Make sure to use command:
 
 1. `make clean`
 2. `make` 
 3. `make qemu` or `make qemu-nox`
 
-### System call and their description
+## System call and their description
 
 1. mk - It's make directory system call like implemented in unix systems.
 2. rmdir - It's remove directory system call like implemented in unix systems.
