@@ -1,0 +1,214 @@
+#include "types.h"
+#include "x86.h"
+#include "defs.h"
+#include "date.h"
+#include "param.h"
+#include "memlayout.h"
+#include "mmu.h"
+#include "proc.h"
+
+extern int rcount, wcount, clcount, ocount;
+int tcount = 0, wtcount = 0, cltcount = 0, otcount = 0;
+
+int
+sys_fork(void)
+{
+  return fork();
+}
+
+int
+sys_exit(void)
+{
+  exit();
+  return 0;  // not reached
+}
+
+int
+sys_wait(void)
+{
+  return wait();
+}
+
+int
+sys_kill(void)
+{
+  int pid;
+
+  if(argint(0, &pid) < 0)
+    return -1;
+  return kill(pid);
+}
+
+int
+sys_getpid(void)
+{
+  return myproc()->pid;
+}
+
+int
+sys_sbrk(void)
+{
+  int addr;
+  int n;
+
+  if(argint(0, &n) < 0)
+    return -1;
+  addr = myproc()->sz;
+  if(growproc(n) < 0)
+    return -1;
+  return addr;
+}
+
+int
+sys_sleep(void)
+{
+  int n;
+  uint ticks0;
+
+  if(argint(0, &n) < 0)
+    return -1;
+  acquire(&tickslock);
+  ticks0 = ticks;
+  while(ticks - ticks0 < n){
+    if(myproc()->killed){
+      release(&tickslock);
+      return -1;
+    }
+    sleep(&ticks, &tickslock);
+  }
+  release(&tickslock);
+  return 0;
+}
+
+// return how many clock tick interrupts have occurred
+// since start.
+int
+sys_uptime(void)
+{
+  uint xticks;
+
+  acquire(&tickslock);
+  xticks = ticks;
+  release(&tickslock);
+  return xticks;
+}
+
+int sys_waitx(void)
+{
+  int *wtime, *rtime;
+
+  if (argptr(0, (char **)&wtime, sizeof(int)) < 0)
+    return -1;
+
+  if (argptr(1, (char **)&rtime, sizeof(int)) < 0)
+    return -1;
+  
+  return waitx(wtime, rtime);
+}
+
+int sys_set_priority(void)
+{
+  int pid, priority;
+
+  if (argint(0, &pid) < 0)
+    return -1;
+
+  if (argint(1, &priority) < 0)
+    return -1;
+  
+  return set_priority(pid, priority);
+
+}
+
+int sys_getpinfo(void)
+{
+  int pid; struct proc_stat *p;
+
+  if(argptr(0,(char**)&p,sizeof(p)) < 0)
+    return -1;
+
+  if(argint(1, &pid) < 0)
+    return -1;
+
+  return getpinfo(p, pid);
+}
+
+int sys_year(void)
+{
+	return 2020;
+}
+
+int
+sys_halt(void)
+{
+  outb(0xf4, 0x00);
+  return 0;
+}
+
+int
+sys_date(void)
+{
+    struct rtcdate *r;
+    if (argptr(0, (char **) &r, sizeof(struct rtcdate)) < 0)
+        return -1;
+    cmostime(r);
+    return 0;
+}
+
+// write count function...
+int
+sys_getwtcount(void)
+{
+  wtcount++;
+  return wtcount;
+}
+
+int
+sys_getwcount(void)
+{
+  return wcount;
+}
+
+
+// read count function...
+int
+sys_gettcount(void)
+{
+  tcount++;
+  return tcount;
+}
+
+int
+sys_getrcount(void)
+{
+  return rcount;
+}
+
+// close count function...
+int
+sys_getcltcount(void)
+{
+  cltcount++;
+  return cltcount;
+}
+
+int
+sys_getclcount(void)
+{
+  return clcount;
+}
+
+// open count function...
+int
+sys_getotcount(void)
+{
+  otcount++;
+  return otcount;
+}
+
+int
+sys_getocount(void)
+{
+  return ocount;
+}
+
