@@ -1,12 +1,12 @@
 # Modified-xv6-MIT-Operating-System
 
-# MIS: 141808009
+#### MIS: 141808009
 
-## Overview
+### Overview
 
 Various additional improvements have been made to the xv6 operating system such as adding the system calls like mk, rmdir, clear, shutdown, rcounter, wcounter, ccounter, date, myecho, ocounter. 
 
-## Run the shell
+### Run the shell
 
 1. Run the command `make qemu` or `make qemu-nox`.
 
@@ -20,7 +20,7 @@ The files that have been modified are:
 4. usys.S
 5. sysproc.c
 
-# NOTE: Make sure to use command:
+#### NOTE: Make sure to use command:
 
 1. `make clean`
 2. `make` 
