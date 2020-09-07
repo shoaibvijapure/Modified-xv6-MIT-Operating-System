@@ -1,8 +1,6 @@
 # Modified-xv6-MIT-Operating-System
 
-# Modifications to the xv6 operating system
-
-## By Shoaib Vijapure (141808009)
+# MIS: 141808009
 
 ## Overview
 
@@ -22,7 +20,7 @@ The files that have been modified are:
 4. usys.S
 5. sysproc.c
 
-NOTE: Make sure to use command:
+# NOTE: Make sure to use command:
 
 1. `make clean`
 2. `make` 
